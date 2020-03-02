@@ -1,9 +1,25 @@
 //express router
 const express = require('express');
 const router = express.Router();
-
-router.get('/admin/categories/new',(req,res)=>{
+const Category = require('./Category');
+const slugify = require('slugify');
+router.get('/admin/categories/new', (req, res) => {
     res.render('admin/categories/new'); //pagina new
 });
 
-module.exports= router;
+router.post('/categories/save', (req, res) => {
+    //pegar dados do formulario
+    var title = req.body.title;
+    if (title = !undefined) {
+        Category.create({
+            title: title,
+            slug: slugify(title) //desenvolvimento web desenvolvimento-web
+        }).then(() => {
+            res.redirect('/');
+        });
+    } else {
+        res.redirect('/admin/categories/new');
+    }
+});
+
+module.exports = router;
