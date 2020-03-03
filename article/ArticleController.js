@@ -14,23 +14,32 @@ router.get('/admin/articles/new', (req, res) => {
     })
 });
 router.get('/admin/articles', (req, res) => {
-    res.render('admin/articles/index')
+    Article.findAll().then(articles => {
+        res.render('admin/articles/index', {
+            articles: articles
+        });
+    });
 });
 //rota que grava o artigo
 router.post('/articles/save', (req, res) => {
     var title = req.body.title;
     var body = req.body.body;
     var category = req.body.category;
+    if (title || body || category !== undefined) {
+        //grava no modelo
+        Article.create({
+            title: title,
+            slug: slugify(title),
+            body: body,
+            categoryId: category
+        }).then(() => {
+            res.redirect('/admin/articles');
+        });
 
-    //grava no modelo
-    Article.create({
-        title: title,
-        slug: slugify(title),
-        body: body,
-        categoryId: category
-    }).then(() => {
+    } else {
         res.redirect('/admin/articles');
-    });
+    }
+
 });
 
 module.exports = router;
