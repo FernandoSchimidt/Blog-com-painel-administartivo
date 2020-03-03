@@ -13,10 +13,16 @@
                 <br>
                 <textarea id="article" class="form-control" placeholder="Escreva o artigo aqui" name="body"></textarea>
                 <br>
-                <button class="btn btn-primary">Cadastrar</button>
+                <label for="">Categoria</label>
+                <select class="form-control" name="category" id="">
+                    <% categories.forEach((category)=>{ %>
+                    <option value="<%=category.id %> "><%=category.title%></option>
+                    <% }) %>
+                </select>
+                <br>
+                <button class="btn btn-dark">Cadastrar</button>
             </form>
         </div>
-
     </div>
 </div>
 
@@ -25,7 +31,7 @@
 <script>
     tinymce.init({
         selector: "#article",
-        plugins:[
+        plugins: [
             'advlist autolink link image lists print preview hr searchreplace wordcount fullscreen insertdatetime media save table pasteemoticons'
         ]
     })
