@@ -1,0 +1,50 @@
+<%- include('../../partials/header.ejs') %>
+<%- include('../../partials/navbar.ejs') %>
+
+<div class="container">
+    <hr>
+    <h2>Categorias</h2>
+    <a class="btn btn-success" href="/admin/categories/new">Criar nova categoria</a>
+    <hr>
+    <table class="table table-striped table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>Titulo</th>
+                <th>Slug</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <% categories.forEach(category=>{%>
+            <tr>
+                <th><%=category.id %> </th>
+                <th><%=category.title %></th>
+                <th><%=category.slug %></th>
+                <th>
+                    <form action="/categories/delete" method="POST" style="display:inline"
+                        onsubmit="confirmaDeletar(event,this)">
+                        <!--Formulario que deleta categoria-->
+                        <input type="hidden" name="id" value="<%= category.id %> ">
+                        <button class="btn btn-danger">Deletar</button>
+                        <!--  quando clicar no botao enviara o id parao backend -->
+                    </form>
+
+                    <a href="/admin/categories/edit/<%=category.id %>" class="btn btn-warning">Editar</a>
+                </th>
+            </tr>
+            <% }) %>
+        </tbody>
+    </table>
+</div>
+<script>
+    function confirmaDeletar(event, form) {
+        event.preventDefault();//não envia o formulario
+        var confDeletar = confirm('Deseja realmente excluir está categoria?');
+        if (confDeletar) {
+            form.submit();
+        }
+    }
+</script>
+<%-include('../../partials/footer.ejs')%>
