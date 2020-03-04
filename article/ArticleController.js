@@ -13,8 +13,14 @@ router.get('/admin/articles/new', (req, res) => {
 
     })
 });
+
+//rota de busca na base
 router.get('/admin/articles', (req, res) => {
-    Article.findAll().then(articles => {
+    Article.findAll({
+        include: [{
+            model: Category
+        }] //join
+    }).then(articles => { //busca todos artigos na base
         res.render('admin/articles/index', {
             articles: articles
         });
@@ -41,5 +47,65 @@ router.post('/articles/save', (req, res) => {
     }
 
 });
+//rota para deletar um artigo
+router.post('/articles/delete', (req, res) => {
+    var id = req.body.id;
+    if (id !== undefined) {
+        if (!isNaN(id)) { //verifica se é um numero
+            Article.destroy({
+                where: {
+                    id: id
+                }
+            }).then(() => {
+                res.redirect('/admin/articles');
+            })
+        } else { //nao for numero
+            res.redirect('/admin/articles');
+        }
+    } else { //for nulo
+        res.redirect('/admin/articles');
+    }
+});
+
+router.get('/admin/articles/edit/:id', (req, res) => {
+    var id = req.params.id;
+ 
+    Article.findByPk(id).then(article => { //pesquisar uma categoria pelo id
+        if (article !== undefined) {
+            Category.findAll().then(categories => {
+                res.render('admin/articles/edit', {
+                   categories:categories,
+                   article:article
+                });
+            });
+
+        } else {
+            res.redirect('/');
+        }
+
+    }).catch(erro => {
+        console.log(erro);
+        res.redirect('/');
+    });
+});
+
+//rota que edita o artigo
+router.post('/articles/update', (req, res) => {
+    var id = req.body.id;
+    var title = req.body.title; //recebe via formulario
+
+
+    Article.update({
+        title: title, //valor a ser atualizado
+        slug: slugify(title) //atualiza o slug 
+    }, {
+        where: {
+            id: id //atualiza o artigo pelo id
+        }
+    }).then(() => {
+        res.redirect('/admin/articles');
+    })
+});
+
 
 module.exports = router;
