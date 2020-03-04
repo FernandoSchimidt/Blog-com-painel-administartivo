@@ -69,13 +69,13 @@ router.post('/articles/delete', (req, res) => {
 
 router.get('/admin/articles/edit/:id', (req, res) => {
     var id = req.params.id;
- 
+
     Article.findByPk(id).then(article => { //pesquisar uma categoria pelo id
         if (article !== undefined) {
             Category.findAll().then(categories => {
                 res.render('admin/articles/edit', {
-                   categories:categories,
-                   article:article
+                    categories: categories,
+                    article: article
                 });
             });
 
@@ -93,19 +93,62 @@ router.get('/admin/articles/edit/:id', (req, res) => {
 router.post('/articles/update', (req, res) => {
     var id = req.body.id;
     var title = req.body.title; //recebe via formulario
-
+    var body = req.body.body;
+    var category = req.body.category;
 
     Article.update({
         title: title, //valor a ser atualizado
-        slug: slugify(title) //atualiza o slug 
+        body: body,
+        vategoryId: category,
+        slug: slugify(title)
     }, {
         where: {
             id: id //atualiza o artigo pelo id
         }
     }).then(() => {
         res.redirect('/admin/articles');
-    })
+    }).catch(err => {
+        res.redirect('');
+    });
 });
 
+//limita os artigos por pagina
+router.get('/articles/page/:num', (req, res) => {
+    var page = req.params.num;
+    var offset = 0;
+
+    if (isNaN(page) || page == 1) {
+        offset = 0;
+    } else {
+        offset = parseInt(page) * 4;
+    }
+
+    Article.findAndCountAll({
+        limit: 4, //4por pagina a partir do 0
+        offset: offset
+    }).then(articles => {
+
+        var next;
+        if (offset + 4 >= articles.count) {
+            next = false
+        } else {
+            next = true;
+        }
+
+        var result = {
+            next: next,
+            articles: articles
+        }
+
+        Category.findAll().then(categories => {
+            res.render('admin/articles/page', {
+                result: result,
+                categories: categories
+            })
+        });
+
+
+    });
+});
 
 module.exports = router;
