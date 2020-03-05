@@ -1,17 +1,31 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+const session = require('express-session');
 const connection = require('./database/database'); //carrega conaxao
 
 const categoriesController = require('./categories/CategoriesController'); // importando a rota
 const articleController = require('./article/ArticleController');
+const userController = require('./users/UserController'); //importa as rotas
+
 
 const Article = require('./article/Article');
 const Category = require('./categories/Category');
-
+const User = require('./users/User');
 //View engine
 app.set('view engine', 'ejs');
 
+
+//Sessions
+
+//Redis
+
+app.use(session({
+    secret: 'node',
+    cookie: {
+        maxAge: 30000000000000 //tempo de duração da sessao
+    }
+}));
 
 //arquivos estaticos
 app.use(express.static('public'));
@@ -34,13 +48,36 @@ connection.authenticate()
 
 app.use('/', categoriesController);
 app.use('/', articleController);
+app.use('/', userController);
+
+// app.get('/session', (req, res) => {
+//     req.session.treinamento = 'Formação nodejs'
+//     req.session.ano = 2020;
+//     req.session.email = 'fernando@fer.com'
+//     req.session.user = {
+//         username: 'fernando',
+//         email: 'fer',
+//         id: 10
+//     }
+//     res.send('Sessão gerada'); //toda seção tem que mandar uma respostaobrigatóriamente
+// });
+
+// app.get('/leitura', (req, res) => {
+//     res.json({
+//         treinamento: req.session.treinamento,
+//         amo: req.session.ano,
+//         email: req.session.email,
+//         user: req.session.user
+
+//     })
+// });
 
 app.get('/', (req, res) => {
     Article.findAll({
         order: [
             ['id', 'DESC']
         ],
-        limit:4
+        limit: 4
     }).then(articles => {
 
         Category.findAll().then(categories => { //pega as categorias no banco
@@ -90,12 +127,12 @@ app.get('/category/:slug', (req, res) => {
                     categories: categories
                 });
             })
-        } else{
+        } else {
             res.redirect('/');
         }
     }).catch(err => {
         res.redirect('/');
-        console.log('Erro:'+err);
+        console.log('Erro:' + err);
     });
 });
 
