@@ -1,23 +1,28 @@
 <%- include('../../partials/header.ejs') %>
-
-
-<div class="container">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a href="/" class="navbar-brand">
+      GuiaPress
+    </a>
+ 
+  </nav>
+<div class="container col-sm-4 text-center">
     <hr>
     <div class="card mt-5">
         <div class="card-header">
-            
-<h2>Login de administrador</h2>
+
+            <h2>Login de administrador</h2>
         </div>
-        <div class="card-body">
-        <form action="/authenticate" method="POST">
-            <input type="email" name="email" class="form-control" placeholder="Email">
-            <br>
-            <input type="password" name="password" class="form-control" placeholder="Senha">
-            <br>
-            <button type="submit" class="btn btn-success btn-block">Logar</button>
-        </form>        
+        <div class="card-body ">
+            <form action="/authenticate" method="POST">
+                <input type="email" name="email" class="form-control" placeholder="Email">
+                <br>
+                <input type="password" name="password" class="form-control" placeholder="Senha">
+                <br>
+                <button type="submit" class="btn btn-primary btn-block">Logar</button>
+            </form>
         </div>
     </div>
+    <hr class="mt-5">
 </div>
 
 <%-include('../../partials/footer.ejs')%>

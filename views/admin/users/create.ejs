@@ -1,23 +1,28 @@
 <%- include('../../partials/header.ejs') %>
 <%- include('../../partials/navbar.ejs') %>
 
-<div class="container">
+<div class="container col-sm-4 text-center">
     <hr>
     <div class="card mt-5">
         <div class="card-header">
-            Criação de usuario
-<h2></h2>
+            <h2>Criação de usuario</h2>
+            <h2></h2>
         </div>
         <div class="card-body">
-        <form action="/users/create" method="POST">
-            <input type="email" name="email" class="form-control" placeholder="Email">
-            <br>
-            <input type="password" name="password" class="form-control" placeholder="Senha">
-            <br>
-            <button type="submit" class="btn btn-success btn-block">Criar</button>
-        </form>        
+            <form action="/users/create" method="POST">
+                <input type="text"name="nome" class="form-control" placeholder="Nome">
+                <br>
+                <input type="email" name="email" class="form-control" placeholder="Email">
+                <br>
+                <input type="password" name="password" class="form-control" placeholder="Senha">
+                <br>
+                <input type="password" name="passwordConf" class="form-control" placeholder="Confirmar Senha">
+                <br>
+                <button type="submit" class="btn btn-primary btn-block">Criar</button>
+            </form>
         </div>
     </div>
+    <hr class="mt-5">
 </div>
 
 <%-include('../../partials/footer.ejs')%>

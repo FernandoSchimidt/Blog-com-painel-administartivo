@@ -16,6 +16,7 @@ router.get('/admin/users/create', (req, res) => {
 });
 
 router.post('/users/create', (req, res) => {
+    var nome = req.body.nome;
     var email = req.body.email;
     var password = req.body.password;
 
@@ -29,6 +30,7 @@ router.post('/users/create', (req, res) => {
             var hash = bcrypt.hashSync(password, salt);
 
             User.create({
+                nome:nome,
                 email: email,
                 password: hash
             }).then(() => {

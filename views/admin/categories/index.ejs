@@ -2,12 +2,12 @@
 <%- include('../../partials/navbar.ejs') %>
 
 <div class="container">
-    <hr>
+    <hr class="mt-5">
     <h2>Categorias</h2>
-    <a class="btn btn-success" href="/admin/categories/new">Criar nova categoria</a>
-    <hr>
+    <a class="btn btn-primary" href="/admin/categories/new">Criar nova categoria</a>
+    <hr class="mt-5">
     <table class="table table-striped table-hover">
-        <thead class="thead-dark">
+        <thead class="thead-light">
             <tr>
                 <th>ID</th>
                 <th>Titulo</th>
@@ -31,7 +31,7 @@
                         <!--  quando clicar no botao enviara o id parao backend -->
                     </form>
 
-                    <a href="/admin/categories/edit/<%=category.id %>" class="btn btn-warning">Editar</a>
+                    <a href="/admin/categories/edit/<%=category.id %>" class="btn btn-light">Editar</a>
                 </th>
             </tr>
             <% }) %>
