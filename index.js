@@ -90,22 +90,23 @@ app.get('/', (req, res) => {
 });
 app.get('/:slug', (req, res) => { //pesquisa pelo slug
     var slug = req.params.slug;
-
     Article.findOne({
         where: {
             slug: slug
         }
     }).then(article => {
-        if (article !== undefined) {
+        if (article != undefined) {
+            console.error('bateu no if');
             res.render('article', {
-                article: article,
-                categories: categories
+                article: article
 
             });
         } else {
+            console.error('bateu no else');
             res.redirect('/');
         }
     }).catch(err => {
+        console.error('Bateu no erro')
         res.redirect('/');
     });
 });
