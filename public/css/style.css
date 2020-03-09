@@ -45,3 +45,10 @@ a:hover {
     height: 450px;
 }
  */
+.ico a{
+    transition: all;
+}
+.ico a:hover{
+    width: 35px;
+    height: 35px;
+}
