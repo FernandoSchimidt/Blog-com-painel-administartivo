@@ -137,10 +137,10 @@ app.get('/category/:slug', (req, res) => {
     });
 });
 
-//umbler
-// app.listen(3000, () => {
+umbler
+ app.listen(3000, () => {
+    console.log('Servidor rodando');
+ });
+// app.listen(8080, () => {
 //     console.log('Servidor rodando');
 // });
-app.listen(8080, () => {
-    console.log('Servidor rodando');
-});
